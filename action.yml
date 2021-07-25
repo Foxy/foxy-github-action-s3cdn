@@ -3,7 +3,7 @@ description: "Uploads your latest release to S3"
 author: samifiaz
 runs:
   using: docker
-  image: Dgitockerfile
+  image: Dockerfile
 branding:
   icon: refresh-cw
   color: green
