@@ -1,5 +1,5 @@
 #!/bin/sh
 
 echo "Printing text with newline"
-output=$(ls)
+output=$(git status)
 echo "$output"
