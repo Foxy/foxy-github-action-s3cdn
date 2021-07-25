@@ -14,6 +14,8 @@ RUN apk add git
 ENV AWSCLI_VERSION='1.20.6'
 
 RUN pip install --quiet --no-cache-dir awscli==${AWSCLI_VERSION}
+RUN ls
+RUN git status
 
 ADD entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
