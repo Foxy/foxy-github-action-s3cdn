@@ -1,15 +1,17 @@
 #!/bin/sh
 
 echo "WELCOME TO MY ENTRYPOINT SH"
+
+
 # GET Released tag
-echo "Current release tag is:"
-echo "${GITHUB_REF#refs/*/}"
+RELEASE_TAG="${GITHUB_REF#refs/*/}"
+echo "Current release tag is: ${RELEASE_TAG}"
 
 #Get previous tag
-echo "Previous release tag is:"
+git fetch --all --tags > /dev/null
+PREVIOUS_TAG=$(git describe --abbrev=0 --tags $(git rev-list --tags --max-count=1))
+echo "Previous release tag is: ${PREVIOUS_TAG}"
 
-git fetch --all --tags
-git describe --abbrev=0 --tags $(git rev-list --tags --max-count=1)
 
 # Set dir names to be created/synced with AWS S3
 
