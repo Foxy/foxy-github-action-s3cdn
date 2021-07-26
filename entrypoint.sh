@@ -2,9 +2,12 @@
 
 echo "WELCOME TO MY ENTRYPOINT SH"
 # GET Released tag
-echo "RELEASE_TAG=${GITHUB_REF#refs/*/}"
+echo "Current release tag is:"
+echo "${GITHUB_REF}"
 
 #Get previous tag
+echo "Previous release tag is:"
+
 git fetch --all --tags
 git describe --abbrev=0 --tags $(git rev-list --tags --max-count=1)
 
