@@ -2,7 +2,8 @@
 
 echo "WELCOME TO MY ENTRYPOINT SH"
 
-git describe --abbrev=0 --tags $(git rev-list --tags --max-count=1)
+HASH=$(git rev-list --tags --max-count=1)
+git describe --abbrev=0 --tags $HASH
 
 
 
