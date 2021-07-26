@@ -14,7 +14,7 @@ PREVIOUS_TAG=$(git describe --abbrev=0 --tags $(git rev-list --tags --max-count=
 echo "Previous release tag is: ${PREVIOUS_TAG}"
 
 # Set dir names to be created/synced with AWS S3
-VERSION=(${RELEASE_TAG//./ })
+VERSION=(${RELEASE_TAG//"."/ })
 MAJOR=${VERSION[0]}
 MINOR=${VERSION[1]}
 PATCH=${VERSION[2]}
