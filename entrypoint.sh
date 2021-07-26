@@ -2,7 +2,7 @@
 
 echo "WELCOME TO MY ENTRYPOINT SH"
 
-git fetch --all --tags)
+git fetch --all --tags
 git describe --abbrev=0 --tags $(git rev-list --tags --max-count=1)
 
 
