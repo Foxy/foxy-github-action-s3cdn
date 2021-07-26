@@ -8,7 +8,6 @@ RUN apk add git
 ENV AWSCLI_VERSION='1.20.6'
 
 RUN pip install --quiet --no-cache-dir awscli==${AWSCLI_VERSION}
-RUN ls
 
 COPY entrypoint.sh /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
