@@ -3,7 +3,7 @@
 echo "WELCOME TO MY ENTRYPOINT SH"
 # GET Released tag
 echo "Current release tag is:"
-echo "${GITHUB_REF}"
+echo "${GITHUB_REF#refs/*/}"
 
 #Get previous tag
 echo "Previous release tag is:"
