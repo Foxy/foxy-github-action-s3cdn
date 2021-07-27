@@ -12,8 +12,8 @@ echo "Current release tag is: ${RELEASE_TAG}"
 # PREVIOUS_TAG=$(git describe --abbrev=0 --tags $(git rev-list --tags --max-count=1))
 # echo "Previous release tag is: ${PREVIOUS_TAG}"
 
-#Set dir names to be created/synced with AWS S3 
-# version="v1.2.3-beta.1"
+#Set dir names to be created/synced with AWS S3 dir major v1, v1.2 v1.2.3
+#version="v1.2.3-beta.1" 
 IFS='.'     # space is set as delimiter
 read -ra VER <<< "$RELEASE_TAG"   # str is read into an array as tokens separated by IFS
 MAJOR=${VER[0]:1:1} 
@@ -21,11 +21,10 @@ MINOR=${VER[1]}
 PATCH=${VER[2]}
 
 echo "major $MAJOR minor $MINOR patch $PATCH"
-echo " $AWS_S3_ENDPOINT $AWS_REGION $AWS_SECRET_ACCESS_KEY $AWS_S3_BUCKET "
+# echo " $AWS_S3_ENDPOINT $AWS_REGION $AWS_SECRET_ACCESS_KEY $AWS_S3_BUCKET "
 
 
 #Upload to S3
-
 if [ -z "$AWS_S3_BUCKET" ]; then
   echo "AWS_S3_BUCKET is not set. Quitting."
   exit 1
@@ -62,10 +61,27 @@ EOF
 
 # Sync using our dedicated profile and suppress verbose messages.
 # All other flags are optional via the `args:` directive.
-sh -c "aws s3 sync ${SOURCE_DIR:-.} s3://${AWS_S3_BUCKET}/${DEST_DIR} \
-              --profile s3-sync-action \
-              --no-progress \
-              ${ENDPOINT_APPEND} $*"
+
+#Uploads major version to it's respective AWS S3 dir
+  sh -c "aws s3 sync ${SOURCE_DIR:-.} s3://${AWS_S3_BUCKET}/${MAJOR} \
+      --profile s3-sync-action \
+      --no-progress \
+    ${ENDPOINT_APPEND} $*"
+
+#Uploads minor version to it's respective AWS S3 dir
+if [ "$MINOR" -ne "" -o ] then
+  sh -c "aws s3 sync ${SOURCE_DIR:-.} s3://${AWS_S3_BUCKET}/${MINOR} \
+      --profile s3-sync-action \
+      --no-progress \
+      ${ENDPOINT_APPEND} $*"
+  #Uploads PATCH version to it's respective AWS S3 dir
+  if [ "$PATCH" -ne "" ] then
+  sh -c "aws s3 sync ${SOURCE_DIR:-.} s3://${AWS_S3_BUCKET}/${PATCH} \
+      --profile s3-sync-action \
+      --no-progress \
+      ${ENDPOINT_APPEND} $*"
+  fi
+fi
 
 # Clear out credentials after we're done.
 # We need to re-run `aws configure` with bogus input instead of
