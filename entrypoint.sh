@@ -16,7 +16,8 @@ echo "Current release tag is: ${RELEASE_TAG}"
 #version="v1.2.3-beta.1" 
 IFS='.'     # space is set as delimiter
 read -ra VER <<< "$RELEASE_TAG"   # str is read into an array as tokens separated by IFS
-if [ "${VER[1]}" -eq "v"] then
+if [ "${VER[0]:0:1}" == "v" ]
+then
   MAJOR=${VER[0]:1:1}
 else
   MAJOR=${VER[0]}
