@@ -75,13 +75,15 @@ EOF
     ${ENDPOINT_APPEND} $*"
 
 #Uploads minor version to it's respective AWS S3 dir
-if [ "$MINOR" -ne "" -o ] then
+if [ "$MINOR" -ne "" -o ] 
+then
   sh -c "aws s3 sync ${SOURCE_DIR:-.} s3://${AWS_S3_BUCKET}/${MINOR} \
       --profile s3-sync-action \
       --no-progress \
       ${ENDPOINT_APPEND} $*"
   #Uploads PATCH version to it's respective AWS S3 dir
-  if [ "$PATCH" -ne "" ] then
+  if [ "$PATCH" -ne "" ] 
+  then
     sh -c "aws s3 sync ${SOURCE_DIR:-.} s3://${AWS_S3_BUCKET}/${PATCH} \
         --profile s3-sync-action \
         --no-progress \
