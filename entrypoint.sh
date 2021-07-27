@@ -4,6 +4,34 @@ set -e
 
 echo "WELCOME TO MY ENTRYPOINT SH"
 
+
+
+if [ -z "$AWS_S3_BUCKET" ]; then
+  echo "AWS_S3_BUCKET is not set. Quitting."
+  exit 1
+fi
+
+if [ -z "$AWS_ACCESS_KEY_ID" ]; then
+  echo "AWS_ACCESS_KEY_ID is not set. Quitting."
+  exit 1
+fi
+
+if [ -z "$AWS_SECRET_ACCESS_KEY" ]; then
+  echo "AWS_SECRET_ACCESS_KEY is not set. Quitting."
+  exit 1
+fi
+
+# Default to us-east-1 if AWS_REGION not set.
+if [ -z "$AWS_REGION" ]; then
+  AWS_REGION="us-east-1"
+fi
+
+# Override default AWS endpoint if user sets AWS_S3_ENDPOINT.
+if [ -n "$AWS_S3_ENDPOINT" ]; then
+  ENDPOINT_APPEND="--endpoint-url $AWS_S3_ENDPOINT"
+fi
+
+
 # GET Released tag
 RELEASE_TAG="${GITHUB_REF#refs/*/}"
 echo "Current release tag is: ${RELEASE_TAG}"
@@ -18,20 +46,21 @@ echo "Current release tag is: ${RELEASE_TAG}"
 # version="v1.2.3-beta.1"
 IFS='.'     # space is set as delimiter
 read -ra VER <<< "$RELEASE_TAG"   # str is read into an array as tokens separated by IFS
-MAJOR=${VER[0]:1:1}
+MAJOR=${VER[0]:1:1} 
 MINOR=${VER[1]}
 PATCH=${VER[2]}
 
 echo "major $MAJOR minor $MINOR patch $PATCH"
+echo " $AWS_S3_ENDPOINT $AWS_REGION $AWS_SECRET_ACCESS_KEY $AWS_S3_BUCKET "
 
 
 #Upload to S3
-aws configure --profile s3-sync-action <<-EOF > /dev/null 2>&1
-${AWS_ACCESS_KEY_ID}
-${AWS_SECRET_ACCESS_KEY}
-${AWS_REGION}
-text
-EOF
+# aws configure --profile s3-sync-action <<-EOF > /dev/null 2>&1
+# ${AWS_ACCESS_KEY_ID}
+# ${AWS_SECRET_ACCESS_KEY}
+# ${AWS_REGION}
+# text
+# EOF
 
 # Sync using our dedicated profile and suppress verbose messages.
 # All other flags are optional via the `args:` directive.
