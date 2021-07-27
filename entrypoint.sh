@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e 
+
 echo "WELCOME TO MY ENTRYPOINT SH"
 
 # GET Released tag
