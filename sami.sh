@@ -18,4 +18,7 @@ then
 else
   MAJOR=${VER[0]}
 fi
-echo "major $MAJOR minor $MINOR patch $PATCH"
+
+MINOR="$MAJOR.${VER[1]}"
+PATCH="$MINOR.${VER[2]}"
+echo "major: $MAJOR \nminor: $MINOR \npatch: $PATCH"

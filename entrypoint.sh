@@ -23,8 +23,8 @@ else
   MAJOR=${VER[0]}
 fi
 
-MINOR=${VER[1]}
-PATCH=${VER[2]}
+MINOR="$MAJOR.${VER[1]}"
+PATCH="$MINOR.${VER[2]}"
 
 echo "major $MAJOR minor $MINOR patch $PATCH"
 # echo " $AWS_S3_ENDPOINT $AWS_REGION $AWS_SECRET_ACCESS_KEY $AWS_S3_BUCKET "
@@ -69,7 +69,7 @@ EOF
 # All other flags are optional via the `args:` directive.
 
 #Uploads major version to it's respective AWS S3 dir
-  sh -c "aws s3 sync ${SOURCE_DIR:-.} s3://${AWS_S3_BUCKET}/${MAJOR} \
+  bash -c "aws s3 sync ${SOURCE_DIR:-.} s3://${AWS_S3_BUCKET}/${MAJOR} \
       --profile s3-sync-action \
       --no-progress \
     ${ENDPOINT_APPEND} $*"
@@ -77,14 +77,14 @@ EOF
 #Uploads minor version to it's respective AWS S3 dir
 if [ "$MINOR" != "" ] 
 then
-  sh -c "aws s3 sync ${SOURCE_DIR:-.} s3://${AWS_S3_BUCKET}/${MINOR} \
+  bash -c "aws s3 sync ${SOURCE_DIR:-.} s3://${AWS_S3_BUCKET}/${MINOR} \
       --profile s3-sync-action \
       --no-progress \
       ${ENDPOINT_APPEND} $*"
   #Uploads PATCH version to it's respective AWS S3 dir
   if [ "$PATCH" != "" ] 
   then
-    sh -c "aws s3 sync ${SOURCE_DIR:-.} s3://${AWS_S3_BUCKET}/${PATCH} \
+    bash -c "aws s3 sync ${SOURCE_DIR:-.} s3://${AWS_S3_BUCKET}/${PATCH} \
         --profile s3-sync-action \
         --no-progress \
         ${ENDPOINT_APPEND} $*"
