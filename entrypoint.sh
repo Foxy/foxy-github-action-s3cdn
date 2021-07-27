@@ -2,18 +2,19 @@
 
 echo "WELCOME TO MY ENTRYPOINT SH"
 
-#Fetch all tags
-git fetch --all --tags
 
 # GET Released tag
 RELEASE_TAG="${GITHUB_REF#refs/*/}"
 echo "Current release tag is: ${RELEASE_TAG}"
 
 #Get previous tag
-PREVIOUS_TAG=$(git describe --abbrev=0 --tags $(git rev-list --tags --max-count=1))
-echo "Previous release tag is: ${PREVIOUS_TAG}"
+#Fetch all tags
+# git fetch --all --tags
+# PREVIOUS_TAG=$(git describe --abbrev=0 --tags $(git rev-list --tags --max-count=1))
+# echo "Previous release tag is: ${PREVIOUS_TAG}"
 
-# Set dir names to be created/synced with AWS S3
+# Set dir names to be created/synced with AWS S3 /entrypoint.sh: line 17: syntax error: unexpected "("
+#  write and exec and test .sh script with hardcoded version numbers, locally first
 VERSION=(${RELEASE_TAG//"."/ })
 MAJOR=${VERSION[0]}
 MINOR=${VERSION[1]}
