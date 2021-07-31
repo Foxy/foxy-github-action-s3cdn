@@ -1,17 +1,9 @@
 name: "JSCDN"
-description: "Uploads your latest release to S3"
-author: samifiaz
+description: "Uploads latest release to S3, with MAJOR, MINOR and PATCH version directories"
+author: sami@foxy.io
 runs:
   using: docker
   image: Dockerfile
 branding:
-  icon: refresh-cw
-  color: green
-inputs:
-  who-to-greet:  # id of input
-    description: 'Who to greet'
-    required: true
-    default: 'World'
-outputs:
-  time: # id of output
-    description: 'The time we greeted you'
+  icon: repeat
+  color: purple

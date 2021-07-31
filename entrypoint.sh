@@ -23,7 +23,7 @@ RELEASE_TAG="${GITHUB_REF#refs/*/}"
 echo "Current release tag is: ${RELEASE_TAG}"
 
 # Set dir names to be created/synced with AWS S3
-IFS='.'     # . is set as delimiter
+IFS='.' # . is set as delimiter
 read -ra VER <<< "$RELEASE_TAG"   # str is read into an array as tokens separated by IFS
 if [ "${VER[0]:0:1}" == "v" ]
 then
@@ -33,7 +33,7 @@ else
 fi
 
 MINOR="$MAJOR.${VER[1]}"
-PATCH="$MINOR.${VER[2]}"
+PATCH="$MINOR.${VER[2]}.${VER[3]}"
 
 echo "major $MAJOR minor $MINOR patch $PATCH"
 
@@ -45,7 +45,7 @@ fi
 
 # Create a dedicated profile for this action to avoid conflicts
 # with past/future actions.
-aws configure --profile s3-sync-action <<-EOF > /dev/null 2>&1
+aws configure --profile s3cdn-sync <<-EOF > /dev/null 2>&1
 ${AWS_ACCESS_KEY_ID}
 ${AWS_SECRET_ACCESS_KEY}
 ${AWS_REGION}
@@ -53,32 +53,20 @@ text
 EOF
 
 # Uploads major version to it's respective AWS S3 dir
-  bash -c "aws s3 sync ${SOURCE_DIR:-.} s3://${AWS_S3_BUCKET}/${MAJOR} \
-      --profile s3-sync-action \
-      --no-progress \
-    $*"
+aws s3 sync ${SOURCE_DIR:-.} s3://${AWS_S3_BUCKET}/${MAJOR} --profile s3cdn-sync --no-progress $*
 # Uploads minor version to it's respective AWS S3 dir
 if [ "$MINOR" != "" ] 
 then
-  bash -c "aws s3 sync ${SOURCE_DIR:-.} s3://${AWS_S3_BUCKET}/${MINOR} \
-      --profile s3-sync-action \
-      --no-progress \
-      $*"
+  aws s3 sync ${SOURCE_DIR:-.} s3://${AWS_S3_BUCKET}/${MINOR} --profile s3cdn-sync --no-progress $*
   # Uploads PATCH version to it's respective AWS S3 dir
   if [ "$PATCH" != "" ] 
   then
-    bash -c "aws s3 sync ${SOURCE_DIR:-.} s3://${AWS_S3_BUCKET}/${PATCH} \
-        --profile s3-sync-action \
-        --no-progress \
-        $*"
+    aws s3 sync ${SOURCE_DIR:-.} s3://${AWS_S3_BUCKET}/${PATCH}  --profile s3cdn-sync  --no-progress $*
   fi
 fi
 
-# Clear out credentials after we're done.
-# We need to re-run `aws configure` with bogus input instead of
-# deleting ~/.aws in case there are other credentials living there.
-# https://forums.aws.amazon.com/thread.jspa?threadID=148833
-aws configure --profile s3-sync-action <<-EOF > /dev/null 2>&1
+# Clear out credentials after we're done.s
+aws configure --profile s3cdn-sync <<-EOF > /dev/null 2>&1
 null
 null
 null
