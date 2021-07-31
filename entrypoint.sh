@@ -57,11 +57,11 @@ aws s3 sync ${SOURCE_DIR:-.} s3://${AWS_S3_BUCKET}/${MAJOR} --profile s3cdn-sync
 # Uploads minor version to it's respective AWS S3 dir
 if [ "$MINOR" != "" ] 
 then
-  aws s3 sync ${SOURCE_DIR:-.} s3://${AWS_S3_BUCKET}/${MINOR} --profile s3cdn-sync --no-progress $*
+  aws s3 sync ${SOURCE_DIR:-.} s3://${AWS_S3_BUCKET}/${MINOR} --profile s3cdn-sync --no-progress 
   # Uploads PATCH version to it's respective AWS S3 dir
   if [ "$PATCH" != "" ] 
   then
-    aws s3 sync ${SOURCE_DIR:-.} s3://${AWS_S3_BUCKET}/${PATCH}  --profile s3cdn-sync  --no-progress $*
+    aws s3 sync ${SOURCE_DIR:-.} s3://${AWS_S3_BUCKET}/${PATCH}  --profile s3cdn-sync  --no-progress 
   fi
 fi
 
