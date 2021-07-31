@@ -35,7 +35,7 @@ fi
 MINOR="$MAJOR.${VER[1]}"
 PATCH="$MINOR.${VER[2]}.${VER[3]}"
 
-echo "major $MAJOR minor $MINOR patch $PATCH"
+echo "Major ver: $MAJOR \n Minor ver: $MINOR \n Patch ver:s $PATCH"
 
 # Upload to S3
 # Default to us-east-1 if AWS_REGION not set.
