@@ -53,7 +53,7 @@ text
 EOF
 
 # Uploads major version to it's respective AWS S3 dir
-aws s3 sync ${SOURCE_DIR:-.} s3://${AWS_S3_BUCKET}/${MAJOR} --profile s3cdn-sync --no-progress $*
+aws s3 sync ${SOURCE_DIR:-.} s3://${AWS_S3_BUCKET}/${MAJOR} --profile s3cdn-sync --no-progress
 # Uploads minor version to it's respective AWS S3 dir
 if [ "$MINOR" != "" ] 
 then
@@ -65,7 +65,7 @@ then
   fi
 fi
 
-# Clear out credentials after we're done.s
+# Clear out credentials after we're done.
 aws configure --profile s3cdn-sync <<-EOF > /dev/null 2>&1
 null
 null
