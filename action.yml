@@ -1,4 +1,4 @@
-name: "JSCDN"
+name: "S3CDN"
 description: "Uploads latest release to S3, with MAJOR, MINOR and PATCH version directories"
 author: sami@foxy.io
 runs:
