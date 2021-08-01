@@ -1,5 +1,5 @@
 #!/bin/bash
-
+echo "Hello $1"
 set -e 
 
 # Check that the environment variable has been set correctly
