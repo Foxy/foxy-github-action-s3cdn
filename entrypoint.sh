@@ -4,7 +4,7 @@ set -e
 
 # Check that the environment variable has been set correctly
 if [ -z "$1" ]; then
-  echo >&2 'error: missing package-nanme variable'
+  echo >&2 'error: missing package-name variable'
   exit 1
 fi
 
