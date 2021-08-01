@@ -27,9 +27,9 @@ IFS='.' # . is set as delimiter
 read -ra VER <<< "$RELEASE_TAG"   # str is read into an array as tokens separated by IFS
 if [ "${VER[0]:0:1}" == "v" ]
 then
-  MAJOR=${VER[0]:1:1}
+  MAJOR="${package_name}@${VER[0]:1:1}"
 else
-  MAJOR=${VER[0]}
+  MAJOR=${package_name}@${VER[0]}
 fi
 
 MINOR="$MAJOR.${VER[1]}"
