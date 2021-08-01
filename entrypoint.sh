@@ -3,6 +3,11 @@
 set -e 
 
 # Check that the environment variable has been set correctly
+if [ -z "$1" ]; then
+  echo >&2 'error: missing package-nanme variable'
+  exit 1
+fi
+
 if [ -z "$AWS_S3_BUCKET" ]; then
   echo >&2 'error: missing AWS_S3_BUCKET environment variable'
   exit 1
