@@ -1,9 +1,15 @@
 name: "S3CDN"
 description: "Uploads latest release to S3, with MAJOR, MINOR and PATCH version directories"
 author: sami@foxy.io
-runs:
-  using: docker
-  image: Dockerfile
 branding:
   icon: repeat
   color: purple
+inputs:
+  package-name: # id of input
+    description: "Package name"
+    required: true
+runs:
+  using: docker
+  image: Dockerfile
+  args:
+    - ${{ inputs.package-name }}

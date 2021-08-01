@@ -21,19 +21,20 @@ fi
 # GET Released tag
 RELEASE_TAG="${GITHUB_REF#refs/*/}"
 echo "Current release tag is: ${RELEASE_TAG}"
-
+PACKAGE_NAME=$i
 # Set dir names to be created/synced with AWS S3
 IFS='.' # . is set as delimiter
 read -ra VER <<< "$RELEASE_TAG"   # str is read into an array as tokens separated by IFS
 if [ "${VER[0]:0:1}" == "v" ]
 then
-  MAJOR="${package_name}@${VER[0]:1:1}"
+  MAJOR="${PACKAGE_NAME}@${VER[0]:1:1}"
 else
-  MAJOR=${package_name}@${VER[0]}
+  MAJOR=${PACKAGE_NAME}@${VER[0]}
 fi
 
 MINOR="$MAJOR.${VER[1]}"
 PATCH="$MINOR.${VER[2]}.${VER[3]}"
+LATEST="${PACKAGE_NAME}@latest"
 
 echo "Major ver: $MAJOR \n Minor ver: $MINOR \n Patch ver:s $PATCH"
 
@@ -51,6 +52,9 @@ ${AWS_SECRET_ACCESS_KEY}
 ${AWS_REGION}
 text
 EOF
+
+# Uploads dir content to it's respective AWS S3 `latest `dir
+aws s3 sync ${SOURCE_DIR:-.} s3://${AWS_S3_BUCKET}/${LATEST} --profile s3cdn-sync --no-progress
 
 # Uploads major version to it's respective AWS S3 dir
 aws s3 sync ${SOURCE_DIR:-.} s3://${AWS_S3_BUCKET}/${MAJOR} --profile s3cdn-sync --no-progress
