@@ -1,5 +1,5 @@
 #!/bin/bash
-echo "Hello $1"
+
 set -e 
 
 # Check that the environment variable has been set correctly
@@ -21,7 +21,7 @@ fi
 # GET Released tag
 RELEASE_TAG="${GITHUB_REF#refs/*/}"
 echo "Current release tag is: ${RELEASE_TAG}"
-PACKAGE_NAME=$i
+PACKAGE_NAME=$1
 # Set dir names to be created/synced with AWS S3
 IFS='.' # . is set as delimiter
 read -ra VER <<< "$RELEASE_TAG"   # str is read into an array as tokens separated by IFS
