@@ -28,6 +28,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: samifiaz/gh-action-docker@master
+        with:
+          package-name: MyPackage # your package name
         env:
           AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
