@@ -27,7 +27,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: samifiaz/gh-action-docker@master
+      - uses: samifiaz/gh-action-docker@main
         with:
           package-name: MyPackage # your package name
         env:
