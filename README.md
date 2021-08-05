@@ -14,28 +14,32 @@ Example of the workflow is given below:
 
 ### `s3-package-release.yml` Example
 
-```
-
-name: Update AWS S3 with current release
+```yaml
+name: S3CDN upload
 
 on:
   push:
     tags:
       - "*"
 jobs:
-  test:
+  s3cdn:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout Foxy/foxy-elements
+        uses: actions/checkout@v2
+      - name: Install & Build # Update this section with your own build commands
+        run: |
+          npm install
+          npm run prepack
       - uses: Foxy/foxy-github-action-s3cdn@main
-        with:
-          package-name: MyPackage # optional: Default is repo name.
+        # with:
+        #   package-name: elements # optional: defaults to the repo name
         env:
           AWS_S3_CDN_BUCKET_NAME: ${{ secrets.AWS_S3_CDN_BUCKET_NAME }}
           AWS_S3_CDN_KEY_ID: ${{ secrets.AWS_S3_CDN_KEY_ID }}
           AWS_S3_CDN_KEY_SECRET: ${{ secrets.AWS_S3_CDN_KEY_SECRET }}
-          AWS_REGION: "us-west-1" # optional: defaults to us-east-1
-          SOURCE_DIR: "public" # optional: defaults to `dist` directory
+          # AWS_REGION: "us-west-1" # optional: defaults to us-east-1
+          # SOURCE_DIR: "public" # optional: defaults to `dist` directory
 ```
 
 | Key                     | Value                                                                                                                                                                                                                       | Suggested Type | Required | Default                                                                  |
