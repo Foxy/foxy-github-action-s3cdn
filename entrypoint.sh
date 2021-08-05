@@ -21,7 +21,7 @@ fi
 # GET Released tag
 RELEASE_TAG="${GITHUB_REF#refs/*/}"
 echo "Current release tag is: ${RELEASE_TAG}"
-echo "GITHUB REF is: ${RELEASE_TAG}"
+echo "GITHUB REF is: ${RELEASE_REF}"
 
 if [ -z "$1" ]; then
   PACKAGE_NAME="myrepo"
