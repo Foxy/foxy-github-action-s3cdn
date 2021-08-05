@@ -18,10 +18,13 @@ if [ -z "$AWS_SECRET_ACCESS_KEY" ]; then
   exit 1
 fi
 
-# GET Released tag
+# GET Released tag refs/heads/feature-branch-1
 RELEASE_TAG="${GITHUB_REF#refs/*/}"
 echo "Current release tag is: ${RELEASE_TAG}"
-echo "GITHUB REF is: ${RELEASE_REF}"
+echo "GITHUB REF is: ${GITHUB_REPOSITORY}"
+echo "GITHUB REF is: ${GITHUB_REPOSITORY}"
+PACK=$(echo "$GITHUB_REPOSITORY" | awk -F / '{print $2}')
+echo $PACK
 
 if [ -z "$1" ]; then
   PACKAGE_NAME="myrepo"
