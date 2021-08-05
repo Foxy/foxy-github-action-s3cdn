@@ -33,7 +33,7 @@ IFS='.' # . is set as delimiter
 read -ra VER <<< "$RELEASE_TAG"   # str is read into an array as tokens separated by IFS
 if [ "${VER[0]:0:1}" == "v" ]
 then
-  MAJOR="${PACKAGE_NAME}@${VER[0]:1:1}"
+  MAJOR="${PACKAGE_NAME}@${VER[0]:1:3}"
 else
   MAJOR=${PACKAGE_NAME}@${VER[0]}
 fi
