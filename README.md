@@ -8,11 +8,11 @@ For example, for first release, for release version `v1.2.3-beta.1` the `dist` c
 
 Create workflow YAML file in `.github/workflows/` directory of your app.
 
-Go to Project's settings in GitHub, Click `Secret`, create the Secret key/values as mentioned in the docs below. On every reelease, this action should run.
+Go to Project's settings in GitHub, Click `Secret`, create the Secret key/values as mentioned in the docs below. On every release, this action should run.
 
 Example of the workflow is given below:
 
-### `my-workflow.yml` Example
+### `s3-package-release.yml` Example
 
 ```
 
@@ -29,13 +29,13 @@ jobs:
       - uses: actions/checkout@v2
       - uses: samifiaz/gh-action-docker@main
         with:
-          package-name: MyPackage # your package name
+          package-name: MyPackage # optional: Default is repo name.
         env:
           AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: "us-west-1" # optional: defaults to us-east-1
-          SOURCE_DIR: "dist" # optional: defaults to `dist` directory
+          SOURCE_DIR: "public" # optional: defaults to `dist` directory
 ```
 
 | Key                     | Value                                                                                                                                                                                                                       | Suggested Type | Required | Default                                                                  |
@@ -45,6 +45,7 @@ jobs:
 | `AWS_S3_BUCKET`         | The name of the bucket you're syncing to. For example, `my-app-releases`.                                                                                                                                                   | `secret env`   | **Yes**  | N/A                                                                      |
 | `AWS_REGION`            | The region where you created your bucket. Set to `us-east-1` by default. [Full list of regions here.](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html#concepts-available-regions) | `env`          | No       | `us-east-1`                                                              |
 | `SOURCE_DIR`            | The local directory (or build directory) you wish to sync/upload to S3 against those release version. For example, `dist`, `public`.                                                                                        | `env`          | No       | If nothing is passed, `dist` will be considered your app/build directory |
+| `package-name`            | Name of the package that will be appended to package version to make directory name. For example, `MyPackage`.                                                                                        | `arg`          | No       | If nothing is passed, project's repo name will be used |
 
 ## License
 
