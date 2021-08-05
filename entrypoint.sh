@@ -42,9 +42,9 @@ MINOR="$MAJOR.${VER[1]}"
 
 if [ "${VER[3]}" == "" ]
 then
-  PATCH="$MINOR.${VER[2]}"
+  PATCH="$MINOR.${VER[2]}" # e.g v1.2.3
 else
-  PATCH="$MINOR.${VER[2]}.${VER[3]}"
+  PATCH="$MINOR.${VER[2]}.${VER[3]}"  # e.g v1.2.3-beta.1
 fi
 
 LATEST="${PACKAGE_NAME}@latest"
