@@ -3,11 +3,6 @@
 set -e 
 
 # Check that the environment variable has been set correctly
-if [ -z "$1" ]; then
-  echo >&2 'error: missing package-name variable'
-  exit 1
-fi
-
 if [ -z "$AWS_S3_BUCKET" ]; then
   echo >&2 'error: missing AWS_S3_BUCKET environment variable'
   exit 1
@@ -26,7 +21,14 @@ fi
 # GET Released tag
 RELEASE_TAG="${GITHUB_REF#refs/*/}"
 echo "Current release tag is: ${RELEASE_TAG}"
-PACKAGE_NAME=$1
+echo "GITHUB REF is: ${RELEASE_TAG}"
+
+if [ -z "$1" ]; then
+  PACKAGE_NAME="myrepo"
+else
+  PACKAGE_NAME=$1
+fi
+
 # Set dir names to be created/synced with AWS S3
 IFS='.' # . is set as delimiter
 read -ra VER <<< "$RELEASE_TAG"   # str is read into an array as tokens separated by IFS
@@ -37,8 +39,14 @@ else
   MAJOR=${PACKAGE_NAME}@${VER[0]}
 fi
 
+if [ "${VER[3]}" == "" ]
+then
+  PATCH="$MINOR.${VER[2]}"
+else
+  PATCH="$MINOR.${VER[2]}.${VER[3]}"
+fi
+
 MINOR="$MAJOR.${VER[1]}"
-PATCH="$MINOR.${VER[2]}.${VER[3]}"
 LATEST="${PACKAGE_NAME}@latest"
 
 echo "Major ver: $MAJOR \n Minor ver: $MINOR \n Patch ver:s $PATCH"
