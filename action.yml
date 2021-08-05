@@ -6,7 +6,7 @@ branding:
   color: purple
 inputs:
   package-name: # id of input
-    description: "Package name"
+    description: "Package name, used for the S3 folder names created and uploaded to."
     required: true
 runs:
   using: docker

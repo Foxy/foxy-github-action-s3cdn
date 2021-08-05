@@ -1,8 +1,12 @@
-# S3CDN
+# S3CDN: An unpkg clone using S3 and CloudFront
 
-This simple action uses the [official AWS CLI version 2 Docker image](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2-docker.html) to upload dist/app directory content to AWS S3 in their Major, Minor and Patch version directories.
+This action runs when tags are created, and will upload your code to an S3 bucket to multiple buckets for `@latest` and `@major`, `@major.minor` and `@major.minor.patch`, for access similar to how unpkg.com works. For example, for first release, for release version `v1.2.3-beta.1` the `dist` content will be uploaded to `1`, `1.2`, `1.2.3-beta.1` directores.
 
-For example, for first release, for release version `v1.2.3-beta.1` the `dist` content will be uploaded to `1`, `1.2`, `1.2.3-beta.1` directores.
+In general, 4 new directories will be created or updated in S3 for `latest` and the different versions. Though it's possible in S3 to do some redirects (which could in theory reduce the number of folders and files created), there are limitations there, and S3 storage space for things like npm packages should generally be _very_ negligible.
+
+This package relies on your tags using [semantic versioning](https://semver.org/).
+
+We'd recommend putting CloudFront in front of your S3 bucket, but that's up to you.
 
 ## Usages
 
