@@ -1,20 +1,20 @@
 #!/bin/bash
 
-set -e 
+set -e
 
 # Check that the environment variable has been set correctly
-if [ -z "$AWS_S3_BUCKET" ]; then
-  echo >&2 'error: missing AWS_S3_BUCKET environment variable'
+if [ -z "$AWS_S3_CDN_BUCKET_NAME" ]; then
+  echo >&2 'error: missing AWS_S3_CDN_BUCKET_NAME environment variable'
   exit 1
 fi
 
-if [ -z "$AWS_ACCESS_KEY_ID" ]; then
-  echo >&2 'error: missing AWS_ACCESS_KEY_ID environment variable'
+if [ -z "$AWS_S3_CDN_KEY_ID" ]; then
+  echo >&2 'error: missing AWS_S3_CDN_KEY_ID environment variable'
   exit 1
 fi
 
-if [ -z "$AWS_SECRET_ACCESS_KEY" ]; then
-  echo >&2 'error: missing AWS_SECRET_ACCESS_KEY environment variable'
+if [ -z "$AWS_S3_CDN_KEY_SECRET" ]; then
+  echo >&2 'error: missing AWS_S3_CDN_KEY_SECRET environment variable'
   exit 1
 fi
 
@@ -59,26 +59,26 @@ fi
 
 # Create a dedicated profile for this action to avoid conflicts with past/future actions.
 aws configure --profile s3cdn-sync <<-EOF > /dev/null 2>&1
-${AWS_ACCESS_KEY_ID}
-${AWS_SECRET_ACCESS_KEY}
+${AWS_S3_CDN_KEY_ID}
+${AWS_S3_CDN_KEY_SECRET}
 ${AWS_REGION}
 text
 EOF
 
 # Uploads dir content to it's respective AWS S3 `latest `dir
-aws s3 sync ${SOURCE_DIR:-.} s3://${AWS_S3_BUCKET}/${LATEST} --profile s3cdn-sync --no-progress
+aws s3 sync ${SOURCE_DIR:-.} s3://${AWS_S3_CDN_BUCKET_NAME}/${LATEST} --profile s3cdn-sync --no-progress
 
 # Uploads major version to it's respective AWS S3 dir
-aws s3 sync ${SOURCE_DIR:-.} s3://${AWS_S3_BUCKET}/${MAJOR} --profile s3cdn-sync --no-progress
+aws s3 sync ${SOURCE_DIR:-.} s3://${AWS_S3_CDN_BUCKET_NAME}/${MAJOR} --profile s3cdn-sync --no-progress
 
 # Uploads minor version to it's respective AWS S3 dir
-if [ "$MINOR" != "" ] 
+if [ "$MINOR" != "" ]
 then
-  bash -c "aws s3 sync ${SOURCE_DIR:-.} s3://${AWS_S3_BUCKET}/${MINOR} --profile s3cdn-sync --no-progress"
+  bash -c "aws s3 sync ${SOURCE_DIR:-.} s3://${AWS_S3_CDN_BUCKET_NAME}/${MINOR} --profile s3cdn-sync --no-progress"
   # Uploads PATCH version to it's respective AWS S3 dir
-  if [ "$PATCH" != "" ] 
+  if [ "$PATCH" != "" ]
   then
-    bash -c "aws s3 sync ${SOURCE_DIR:-.} s3://${AWS_S3_BUCKET}/${PATCH}  --profile s3cdn-sync  --no-progress" 
+    bash -c "aws s3 sync ${SOURCE_DIR:-.} s3://${AWS_S3_CDN_BUCKET_NAME}/${PATCH}  --profile s3cdn-sync  --no-progress"
   fi
 fi
 

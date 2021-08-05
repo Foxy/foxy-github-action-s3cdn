@@ -31,18 +31,18 @@ jobs:
         with:
           package-name: MyPackage # optional: Default is repo name.
         env:
-          AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_S3_CDN_BUCKET_NAME: ${{ secrets.AWS_S3_CDN_BUCKET_NAME }}
+          AWS_S3_CDN_KEY_ID: ${{ secrets.AWS_S3_CDN_KEY_ID }}
+          AWS_S3_CDN_KEY_SECRET: ${{ secrets.AWS_S3_CDN_KEY_SECRET }}
           AWS_REGION: "us-west-1" # optional: defaults to us-east-1
           SOURCE_DIR: "public" # optional: defaults to `dist` directory
 ```
 
 | Key                     | Value                                                                                                                                                                                                                       | Suggested Type | Required | Default                                                                  |
 | ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- | -------- | ------------------------------------------------------------------------ |
-| `AWS_ACCESS_KEY_ID`     | Your AWS Access Key. [More info here.](https://docs.aws.amazon.com/general/latest/gr/managing-aws-access-keys.html)                                                                                                         | `secret env`   | **Yes**  | N/A                                                                      |
-| `AWS_SECRET_ACCESS_KEY` | Your AWS Secret Access Key. [More info here.](https://docs.aws.amazon.com/general/latest/gr/managing-aws-access-keys.html)                                                                                                  | `secret env`   | **Yes**  | N/A                                                                      |
-| `AWS_S3_BUCKET`         | The name of the bucket you're syncing to. For example, `my-app-releases`.                                                                                                                                                   | `secret env`   | **Yes**  | N/A                                                                      |
+| `AWS_S3_CDN_KEY_ID`     | Your AWS Access Key. [More info here.](https://docs.aws.amazon.com/general/latest/gr/managing-aws-access-keys.html)                                                                                                         | `secret env`   | **Yes**  | N/A                                                                      |
+| `AWS_S3_CDN_KEY_SECRET` | Your AWS Secret Access Key. [More info here.](https://docs.aws.amazon.com/general/latest/gr/managing-aws-access-keys.html)                                                                                                  | `secret env`   | **Yes**  | N/A                                                                      |
+| `AWS_S3_CDN_BUCKET_NAME`         | The name of the bucket you're syncing to. For example, `my-app-releases`.                                                                                                                                                   | `secret env`   | **Yes**  | N/A                                                                      |
 | `AWS_REGION`            | The region where you created your bucket. Set to `us-east-1` by default. [Full list of regions here.](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html#concepts-available-regions) | `env`          | No       | `us-east-1`                                                              |
 | `SOURCE_DIR`            | The local directory (or build directory) you wish to sync/upload to S3 against those release version. For example, `dist`, `public`.                                                                                        | `env`          | No       | If nothing is passed, `dist` will be considered your app/build directory |
 | `package-name`            | Name of the package that will be appended to package version to make directory name. For example, `MyPackage`.                                                                                        | `arg`          | No       | If nothing is passed, project's repo name will be used |
