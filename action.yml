@@ -1,6 +1,6 @@
 name: "S3CDN"
-description: "Uploads latest release to S3, with MAJOR, MINOR and PATCH version directories"
-author: sami@foxy.io
+description: "Replicates basic unpkg.com functionality by uploading tagged releases to S3, with MAJOR, MINOR and PATCH version directories"
+author: Foxy.io
 branding:
   icon: repeat
   color: purple

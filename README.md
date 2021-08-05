@@ -27,7 +27,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: samifiaz/gh-action-docker@main
+      - uses: Foxy/foxy-github-action-s3cdn@main
         with:
           package-name: MyPackage # optional: Default is repo name.
         env:
