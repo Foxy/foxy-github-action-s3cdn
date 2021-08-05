@@ -38,6 +38,8 @@ else
   MAJOR=${PACKAGE_NAME}@${VER[0]}
 fi
 
+MINOR="$MAJOR.${VER[1]}"
+
 if [ "${VER[3]}" == "" ]
 then
   PATCH="$MINOR.${VER[2]}"
@@ -45,7 +47,6 @@ else
   PATCH="$MINOR.${VER[2]}.${VER[3]}"
 fi
 
-MINOR="$MAJOR.${VER[1]}"
 LATEST="${PACKAGE_NAME}@latest"
 
 echo "Major: $MAJOR Minor: $MINOR  Patch: $PATCH"
