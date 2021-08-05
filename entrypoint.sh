@@ -30,7 +30,7 @@ fi
 
 # Set dir names to be created/synced with AWS S3
 IFS='.' # . is set as delimiter
-read -ra VER <<< "$RELEASE_TAG"   # str is read into an array as tokens separated by IFS
+read -ra VER <<< "$RELEASE_TAG"   # RELEASE_TAG is read into an array as tokens separated by IFS
 if [ "${VER[0]:0:1}" == "v" ]
 then
   MAJOR="${PACKAGE_NAME}@${VER[0]:1:3}"
@@ -57,8 +57,7 @@ if [ -z "$AWS_REGION" ]; then
   AWS_REGION="us-east-1"
 fi
 
-# Create a dedicated profile for this action to avoid conflicts
-# with past/future actions.
+# Create a dedicated profile for this action to avoid conflicts with past/future actions.
 aws configure --profile s3cdn-sync <<-EOF > /dev/null 2>&1
 ${AWS_ACCESS_KEY_ID}
 ${AWS_SECRET_ACCESS_KEY}
@@ -71,6 +70,7 @@ aws s3 sync ${SOURCE_DIR:-.} s3://${AWS_S3_BUCKET}/${LATEST} --profile s3cdn-syn
 
 # Uploads major version to it's respective AWS S3 dir
 aws s3 sync ${SOURCE_DIR:-.} s3://${AWS_S3_BUCKET}/${MAJOR} --profile s3cdn-sync --no-progress
+
 # Uploads minor version to it's respective AWS S3 dir
 if [ "$MINOR" != "" ] 
 then
