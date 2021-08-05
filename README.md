@@ -1,8 +1,10 @@
 # S3CDN: An unpkg clone using S3 and CloudFront
 
-This action runs when tags are created, and will upload your code to an S3 bucket to multiple buckets for `@latest` and `@major`, `@major.minor` and `@major.minor.patch`, for access similar to how unpkg.com works. For example, for first release, for release version `v1.2.3-beta.1` the `dist` content will be uploaded to `1`, `1.2`, `1.2.3-beta.1` directores.
+This action runs when tags are created, and will upload your code to an S3 bucket to multiple directories for `@latest` and `@major`, `@major.minor` and `@major.minor.patch`, for access similar to how unpkg.com works. For example, for first release, for release version `v1.2.3-beta.1` the `dist` content will be uploaded to `1`, `1.2`, `1.2.3-beta.1` directores.
 
 In general, 4 new directories will be created or updated in S3 for `latest` and the different versions. Though it's possible in S3 to do some redirects (which could in theory reduce the number of folders and files created), there are limitations there, and S3 storage space for things like npm packages should generally be _very_ negligible.
+
+Note that it doesn't allow for tilde (`~`) or caret (`^`) ranges, nor for asterisks (`*`), though as with unpkg.com, you you can get the latest of any major or minor release by simply not including the minor or patch version, such as `package@1` (which will serve the latest `1.x.x` release) or `package@1.1` (which will serve the latest `1.1.x` release). Unlike unpkg, which redirects, it will serve the files in the corresponding directories in S3.
 
 This package relies on your tags using [semantic versioning](https://semver.org/).
 

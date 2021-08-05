@@ -1,5 +1,5 @@
 name: "S3CDN"
-description: "Replicates basic unpkg.com functionality by uploading tagged releases to S3, with MAJOR, MINOR and PATCH version directories"
+description: "Replicates basic unpkg.com functionality by uploading tagged releases to S3, with @latest and semver directories."
 author: Foxy.io
 branding:
   icon: upload-cloud
