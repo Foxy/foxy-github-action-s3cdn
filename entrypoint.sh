@@ -21,13 +21,9 @@ fi
 # GET Released tag refs/heads/feature-branch-1
 RELEASE_TAG="${GITHUB_REF#refs/*/}"
 echo "Current release tag is: ${RELEASE_TAG}"
-echo "GITHUB REF is: ${GITHUB_REPOSITORY}"
-echo "GITHUB REF is: ${GITHUB_REPOSITORY}"
-PACK=$(echo "$GITHUB_REPOSITORY" | awk -F / '{print $2}')
-echo $PACK
 
 if [ -z "$1" ]; then
-  PACKAGE_NAME="myrepo"
+  PACKAGE_NAME=$(echo "$GITHUB_REPOSITORY" | awk -F / '{print $2}')
 else
   PACKAGE_NAME=$1
 fi
@@ -52,7 +48,7 @@ fi
 MINOR="$MAJOR.${VER[1]}"
 LATEST="${PACKAGE_NAME}@latest"
 
-echo "Major ver: $MAJOR \n Minor ver: $MINOR \n Patch ver:s $PATCH"
+echo "Major: $MAJOR Minor: $MINOR  Patch: $PATCH"
 
 # Upload to S3
 # Default to us-east-1 if AWS_REGION not set.
