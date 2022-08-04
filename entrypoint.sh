@@ -18,13 +18,14 @@ if [ -z "$AWS_S3_CDN_KEY_SECRET" ]; then
   exit 1
 fi
 
+if [ -d "$SOURCE_DIR" ]; then
+  echo >&2 "$SOURCE_DIR does exist. There is nothing to upload."
+  exit 1
+fi
+
 # GET Released tag refs/heads/feature-branch-1
 RELEASE_TAG="${GITHUB_REF#refs/*/}"
 echo "Current release tag is: ${RELEASE_TAG}"
-
-if [ -z "$SOURCE_DIR" ]; then
-  SOURCE_DIR='dist'
-fi
 
 if [ -z "$1" ]; then
   PACKAGE_NAME=$(echo "$GITHUB_REPOSITORY" | awk -F / '{print $2}')
