@@ -18,7 +18,7 @@ if [ -z "$AWS_S3_CDN_KEY_SECRET" ]; then
   exit 1
 fi
 
-if [ -d "$SOURCE_DIR" ]; then
+if [ ! -d "$SOURCE_DIR" ]; then
   echo >&2 "$SOURCE_DIR does not exist. There is nothing to upload."
   exit 1
 fi
