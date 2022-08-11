@@ -6,10 +6,14 @@ branding:
   color: purple
 inputs:
   package-name: # id of input
-    description: "Package name, used for the S3 folder names created and uploaded to."
+    description: "Package name, used for the S3 directory names created and uploaded to."
+    required: true
+  tag-name: # id of input
+    description: "Tag name, latest tag name of the release."
     required: true
 runs:
   using: docker
   image: Dockerfile
   args:
     - ${{ inputs.package-name }}
+    - ${{ inputs.tag-name }}
