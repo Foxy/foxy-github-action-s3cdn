@@ -23,9 +23,11 @@ if [ ! -d "$SOURCE_DIR" ]; then
   exit 1
 fi
 
-# GET Released tag refs/heads/feature-branch-1
-RELEASE_TAG="${GITHUB_REF#refs/*/}"
-echo "Current release tag is: ${RELEASE_TAG}"
+# GET Released tag or Branch name taken from GITHUB_REF#refs/*/ e.g refs/heads/feature-branch-1
+RELEASE_TAG_BRANCH="${GITHUB_REF#refs/*/}"
+echo "Current release tag or branch name is is: ${RELEASE_TAG_BRANCH}"
+
+
 
 if [ -z "$1" ]; then
   PACKAGE_NAME=$(echo "$GITHUB_REPOSITORY" | awk -F / '{print $2}')
@@ -40,10 +42,11 @@ else
   TAG_NAME=$2
 fi
 
+echo "Tag name passed is: ${TAG_NAME}"
 # Leaving this for later iteration when action is triggered with release_tag event
 # Set dir names to be created/synced with AWS S3
 # IFS='.' # . is set as delimiter
-# read -ra VER <<< "$RELEASE_TAG"   # RELEASE_TAG is read into an array as tokens separated by IFS
+# read -ra VER <<< "$RELEASE_TAG_BRANCH"   # RELEASE_TAG_BRANCH is read into an array as tokens separated by IFS
 
 if [ "${TAG_NAME[0]:0:1}" == "v" ]
 then
