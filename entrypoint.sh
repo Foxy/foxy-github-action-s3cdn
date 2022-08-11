@@ -33,23 +33,32 @@ else
   PACKAGE_NAME=$1
 fi
 
-# Set dir names to be created/synced with AWS S3
-IFS='.' # . is set as delimiter
-read -ra VER <<< "$RELEASE_TAG"   # RELEASE_TAG is read into an array as tokens separated by IFS
-if [ "${VER[0]:0:1}" == "v" ]
-then
-  MAJOR="${PACKAGE_NAME}@${VER[0]:1:3}"
+if [ -z "$2" ]; then
+  echo >&2 "Tag name is not present."
+  exit 1
 else
-  MAJOR=${PACKAGE_NAME}@${VER[0]}
+  TAG_NAME=$2
 fi
 
-MINOR="$MAJOR.${VER[1]}"
+# Leaving this for later iteration when action is triggered with release_tag event
+# Set dir names to be created/synced with AWS S3
+# IFS='.' # . is set as delimiter
+# read -ra VER <<< "$RELEASE_TAG"   # RELEASE_TAG is read into an array as tokens separated by IFS
 
-if [ "${VER[3]}" == "" ]
+if [ "${TAG_NAME[0]:0:1}" == "v" ]
 then
-  PATCH="$MINOR.${VER[2]}" # e.g v1.2.3
+  MAJOR="${PACKAGE_NAME}@${TAG_NAME[0]:1:3}"
 else
-  PATCH="$MINOR.${VER[2]}.${VER[3]}"  # e.g v1.2.3-beta.1
+  MAJOR=${PACKAGE_NAME}@${TAG_NAME[0]}
+fi
+
+MINOR="$MAJOR.${TAG_NAME[1]}"
+
+if [ "${TAG_NAME[3]}" == "" ]
+then
+  PATCH="$MINOR.${TAG_NAME[2]}" # e.g v1.2.3
+else
+  PATCH="$MINOR.${TAG_NAME[2]}.${TAG_NAME[3]}"  # e.g v1.2.3-beta.1
 fi
 
 LATEST="${PACKAGE_NAME}@latest"
