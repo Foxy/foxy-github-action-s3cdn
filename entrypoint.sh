@@ -35,19 +35,12 @@ else
   PACKAGE_NAME=$1
 fi
 
-if [ -z "$2" ]; then
-  echo >&2 "Tag name is not present."
-  exit 1
-else
-  TAG_NAME=$2
-fi
-
 echo "Tag name sent is: ${GIT_TAG}"
 TAG_NAME=${GIT_TAG}
 # Leaving this for later iteration when action is triggered with release_tag event
 # Set dir names to be created/synced with AWS S3
-# IFS='.' # . is set as delimiter
-# read -ra VER <<< "$RELEASE_TAG_BRANCH"   # RELEASE_TAG_BRANCH is read into an array as tokens separated by IFS
+IFS='.' # . is set as delimiter
+read -ra TAG_NAME <<< "$GIT_TAG"   # RELEASE_TAG_BRANCH is read into an array as tokens separated by IFS
 
 if [ "${TAG_NAME[0]:0:1}" == "v" ]
 then
