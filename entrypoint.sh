@@ -43,6 +43,7 @@ else
 fi
 
 echo "Tag name sent is: ${GIT_TAG}"
+TAG_NAME=${GIT_TAG}
 # Leaving this for later iteration when action is triggered with release_tag event
 # Set dir names to be created/synced with AWS S3
 # IFS='.' # . is set as delimiter
