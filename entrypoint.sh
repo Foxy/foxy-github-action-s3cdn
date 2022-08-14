@@ -41,7 +41,7 @@ if [ -z "$2" ]; then
 else
   TAG_NAME=$2
 fi
-
+print(os.getenv('TAG_NAME'))
 echo "Tag name passed is: ${TAG_NAME}"
 # Leaving this for later iteration when action is triggered with release_tag event
 # Set dir names to be created/synced with AWS S3
