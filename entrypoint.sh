@@ -35,7 +35,7 @@ else
   PACKAGE_NAME=$1
 fi
 
-echo "Tag name sent is: ${GIT_TAG}"
+echo "Tag name sent ihs: ${GIT_TAG}"
 TAG_NAME=${GIT_TAG}
 # Leaving this for later iteration when action is triggered with release_tag event
 # Set dir names to be created/synced with AWS S3
