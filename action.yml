@@ -1,0 +1,15 @@
+name: "S3CDN"
+description: "Replicates basic unpkg.com functionality by uploading tagged releases to S3, with @latest and semver directories."
+author: Foxy.io
+branding:
+  icon: upload-cloud
+  color: purple
+inputs:
+  package-name: # id of input
+    description: "Package name, used for the S3 directory names created and uploaded to."
+    required: true
+runs:
+  using: docker
+  image: Dockerfile
+  args:
+    - ${{ inputs.package-name }}
