@@ -27,20 +27,18 @@ fi
 RELEASE_TAG_BRANCH="${GITHUB_REF#refs/*/}"
 echo "Current release tag or branch name is is: ${RELEASE_TAG_BRANCH}"
 
-
-
 if [ -z "$1" ]; then
   PACKAGE_NAME=$(echo "$GITHUB_REPOSITORY" | awk -F / '{print $2}')
 else
   PACKAGE_NAME=$1
 fi
 
-echo "Tag name sent ihs: ${GIT_TAG}"
-TAG_NAME=${GIT_TAG}
-# Leaving this for later iteration when action is triggered with release_tag event
+echo "Getting the latest tag name from env:  ${LATEST_TAG_NAME}"
+TAG_NAME=${LATEST_TAG_NAME}
+
 # Set dir names to be created/synced with AWS S3
 IFS='.' # . is set as delimiter
-read -ra TAG_NAME <<< "$GIT_TAG"   # RELEASE_TAG_BRANCH is read into an array as tokens separated by IFS
+read -ra TAG_NAME <<< "$LATEST_TAG_NAME"   #  ${LATEST_TAG_NAME} is read into an array as tokens separated by IFS
 
 if [ "${TAG_NAME[0]:0:1}" == "v" ]
 then
