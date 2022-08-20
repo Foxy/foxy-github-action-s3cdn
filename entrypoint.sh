@@ -74,20 +74,27 @@ ${AWS_REGION}
 text
 EOF
 
-# Uploads dir content to it's respective AWS S3 `latest `dir
-aws s3 sync ${SOURCE_DIR:-.} s3://${AWS_S3_CDN_BUCKET_NAME}/${LATEST} --profile s3cdn-sync --no-progress
-
-# Uploads major version to it's respective AWS S3 dir
-aws s3 sync ${SOURCE_DIR:-.} s3://${AWS_S3_CDN_BUCKET_NAME}/${MAJOR} --profile s3cdn-sync --no-progress
-
-# Uploads minor version to it's respective AWS S3 dir
-if [ "$MINOR" != "" ]
+# If its running from beta branch only update `repo@beta` and `repo@patch`
+if [ "${RELEASE_TAG_BRANCH}" == "beta" ]
 then
-  bash -c "aws s3 sync ${SOURCE_DIR:-.} s3://${AWS_S3_CDN_BUCKET_NAME}/${MINOR} --profile s3cdn-sync --no-progress"
-  # Uploads PATCH version to it's respective AWS S3 dir
-  if [ "$PATCH" != "" ]
+  # upload to beta and patch dir only i.e `repo@1.2.3-beta7` and `repo@beta`
+  bash -c "aws s3 sync ${SOURCE_DIR:-.} s3://${AWS_S3_CDN_BUCKET_NAME}/${PATCH}  --profile s3cdn-sync  --no-progress"
+  bash -c "aws s3 sync ${SOURCE_DIR:-.} s3://${AWS_S3_CDN_BUCKET_NAME}/beta  --profile s3cdn-sync  --no-progress"
+else
+  # in case of main branch
+  # Uploads dir content to it's respective AWS S3 `latest `dir
+  aws s3 sync ${SOURCE_DIR:-.} s3://${AWS_S3_CDN_BUCKET_NAME}/${LATEST} --profile s3cdn-sync --no-progress
+  # Uploads major version to it's respective AWS S3 dir
+  aws s3 sync ${SOURCE_DIR:-.} s3://${AWS_S3_CDN_BUCKET_NAME}/${MAJOR} --profile s3cdn-sync --no-progress
+  # Uploads minor version to it's respective AWS S3 dir
+  if [ "$MINOR" != "" ]
   then
-    bash -c "aws s3 sync ${SOURCE_DIR:-.} s3://${AWS_S3_CDN_BUCKET_NAME}/${PATCH}  --profile s3cdn-sync  --no-progress"
+    bash -c "aws s3 sync ${SOURCE_DIR:-.} s3://${AWS_S3_CDN_BUCKET_NAME}/${MINOR} --profile s3cdn-sync --no-progress"
+    # Uploads PATCH version to it's respective AWS S3 dir
+    if [ "$PATCH" != "" ]
+    then
+      bash -c "aws s3 sync ${SOURCE_DIR:-.} s3://${AWS_S3_CDN_BUCKET_NAME}/${PATCH}  --profile s3cdn-sync  --no-progress"
+    fi
   fi
 fi
 
