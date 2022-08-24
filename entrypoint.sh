@@ -57,8 +57,9 @@ else
 fi
 
 LATEST="${PACKAGE_NAME}@latest"
+BETA="${PACKAGE_NAME}@beta"
 
-echo "Major: $MAJOR Minor: $MINOR  Patch: $PATCH"
+echo "Major: $MAJOR Minor: $MINOR  Patch: $PATCH Beta: $BETA "
 
 # Upload to S3
 # Default to us-east-1 if AWS_REGION not set.
@@ -79,13 +80,13 @@ if [ "${RELEASE_TAG_BRANCH}" == "beta" ]
 then
   # upload to beta and patch dir only i.e `repo@1.2.3-beta7` and `repo@beta`
   bash -c "aws s3 sync ${SOURCE_DIR:-.} s3://${AWS_S3_CDN_BUCKET_NAME}/${PATCH}  --profile s3cdn-sync  --no-progress"
-  bash -c "aws s3 sync ${SOURCE_DIR:-.} s3://${AWS_S3_CDN_BUCKET_NAME}/beta  --profile s3cdn-sync  --no-progress"
+  bash -c "aws s3 sync ${SOURCE_DIR:-.} s3://${AWS_S3_CDN_BUCKET_NAME}/${BETA}  --profile s3cdn-sync  --no-progress"
 else
   # in case of main branch
   # Uploads dir content to it's respective AWS S3 `latest `dir
-  aws s3 sync ${SOURCE_DIR:-.} s3://${AWS_S3_CDN_BUCKET_NAME}/${LATEST} --profile s3cdn-sync --no-progress
+  bash -c "aws s3 sync ${SOURCE_DIR:-.} s3://${AWS_S3_CDN_BUCKET_NAME}/${LATEST} --profile s3cdn-sync --no-progress"
   # Uploads major version to it's respective AWS S3 dir
-  aws s3 sync ${SOURCE_DIR:-.} s3://${AWS_S3_CDN_BUCKET_NAME}/${MAJOR} --profile s3cdn-sync --no-progress
+  bash -c "aws s3 sync ${SOURCE_DIR:-.} s3://${AWS_S3_CDN_BUCKET_NAME}/${MAJOR} --profile s3cdn-sync --no-progress"
   # Uploads minor version to it's respective AWS S3 dir
   if [ "$MINOR" != "" ]
   then
